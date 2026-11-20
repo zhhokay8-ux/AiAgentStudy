@@ -15,8 +15,9 @@ def get_milvus_client():
 def build_schema(client:MilvusClient):
     schema = client.create_schema(auto_id=True)
     schema.add_field(field_name="id", datatype=DataType.INT64,is_primary=True)
-    schema.add_field(field_name="dense_vector",datatype=DataType.FLOAT_VECTOR,dim=1024)
-    schema.add_field(field_name="sparse_vector",datatype=DataType.FLOAT_VECTOR,dim=1024)
+    schema.add_field(field_name="sparse_vector",datatype=DataType.SPARSE_FLOAT_VECTOR) #稀疏向量
+
+    schema.add_field(field_name="dense_vector",datatype=DataType.FLOAT_VECTOR,dim=1024) #稠密向量
     schema.add_field(field_name="text",datatype=DataType.VARCHAR,max_length=1500)
     schema.add_field(field_name="metadata",datatype=DataType.JSON)
     return schema
@@ -46,5 +47,5 @@ def build_collection(client:MilvusClient):
         print(client.list_collections()) #查看collection
         client.describe_collection(collection_name="test_collection")
 
-create_collection(get_milvus_client())
+build_collection(get_milvus_client())
 
